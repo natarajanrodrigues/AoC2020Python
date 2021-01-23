@@ -3,7 +3,7 @@ from functools import reduce
 
 from itertools import combinations
 
-with open("input-day1.txt", "r") as fd:
+with open("input-day01.txt", "r") as fd:
   entries = [int(entry) for entry in fd]
 
 def calculate_fuel(mass): 
