@@ -57,3 +57,13 @@ print("Result 1: ", len(list(filter(lambda x: isValid(x), copy.deepcopy(entries)
 
 # Part2
 print("Result 2: ", len(list(filter(lambda x: isValid2(x), entries))) )
+
+
+r = open('input-day02.txt').read().strip('\n')
+import re
+input = [[int(y) if y.isdigit() else y for y in re.split('-| |: ',line)] for line in r.splitlines()]
+# print(input)
+
+# example tuple output after re.split - Regular expression rules!
+# [4, 6, 'v', 'tvfvvvqvlkrpxkvvhztr'], 
+# [3, 6, 'v', 'vvdvvbv'],
