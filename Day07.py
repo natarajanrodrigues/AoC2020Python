@@ -38,16 +38,11 @@ def part_1(entries):
 print("Result 1: ", part_1(entries))
 
 def get_total_num_bags(color_bag):
-  
-  if color_bag not in map_bags.keys():
-    return 0
-  if color_bag in map_bags.keys() and map_bags[color_bag] == 0:
-    return 1
   count = 0
   for sub_color in map_bags[color_bag].keys():
-    
+    num_sub_color_bag = map_bags[color_bag][sub_color]
     count_sub_bags = get_total_num_bags(sub_color)
-    count += map_bags[color_bag][sub_color] + map_bags[color_bag][sub_color] * count_sub_bags
+    count += num_sub_color_bag + num_sub_color_bag * count_sub_bags
   return count
 
 def part_2(entries):
@@ -55,7 +50,6 @@ def part_2(entries):
     split_result = line.split(" contain ")
     bag = split_result[0].replace(" bags", "").replace(" bag", "")
     contents = split_result[1].replace(" bags", "").replace(" bag", "").split(", ")
-    # map_bags[bag] = [re.sub(r"^\d+ ", "", item) for item in contents]
     sub_colors = {}
     for color in contents:
       number = re.findall("\d+", color)
