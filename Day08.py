@@ -15,18 +15,19 @@ for line in entries:
 
 def walk_by(instructions):
   visited_index_instructions = []
-  next = 0
+  index = 0
   accumulator = 0
-  while next not in visited_index_instructions:
-    visited_index_instructions.append(next)
-    instruction = instructions[next][0]
+  while index not in visited_index_instructions:
+    visited_index_instructions.append(index)
+    
+    instruction, number = instructions[index]
     if instruction == "nop":
-      next += 1
+      index += 1
     elif instruction == "jmp":
-      next += instructions[next][1]
+      index += number
     else: 
-      accumulator += instructions[next][1]
-      next += 1
+      accumulator += number
+      index += 1
   return accumulator
 
 def part_1(instructions):
@@ -40,19 +41,18 @@ def walk_until_the_end(instructions):
   visited_index_instructions = []
 
   accumulator = 0
-  next = 0
-  while next not in visited_index_instructions and next < len(instructions):
-    visited_index_instructions.append(next)
-    instruction = instructions[next][0]
-    
+  index = 0
+  while index not in visited_index_instructions and index < len(instructions):
+    visited_index_instructions.append(index)
+    instruction, number = instructions[index]
     if instruction == "nop":
-      next += 1
+      index += 1
     elif instruction == "jmp":
-      next += instructions[next][1]
+      index += number
     else: 
-      accumulator += instructions[next][1]
-      next += 1
-  if next == len(instructions):
+      accumulator += number
+      index += 1
+  if index == len(instructions):
     return accumulator
   else:
     return 0
