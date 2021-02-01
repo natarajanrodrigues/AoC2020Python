@@ -12,14 +12,29 @@ import re
 # re.search(r"ecl:(amb|blu|brn|gry|grn|hzl|oth)", str)
 # re.search(r"pid:[0-9]{9}", str)
 
-str = 'ecl:gry pid:860033327 eyr:2020 hcl:#fffffd byr:1937 iyr:2017 cid:147 hgt:183cm'
-if ( re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
-    re.search(r"iyr:20[1][0-9]|iyr:2020", str) and
-    re.search(r"eyr:20[2][0-9]|eyr:2030", str) and
-    re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
-    re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
-    re.search(r"hcl:#([a-f0-9]{6})", str) and
-    re.search(r"ecl:(amb|blu|brn|gry|grn|hzl|oth)", str) and
-    re.search(r"pid:[0-9]{9}", str) 
-    ):
+# str = 'ecl:gry pid:860033327 eyr:2020 hcl:#fffffd byr:1937 iyr:2017 cid:147 hgt:183cm'
+# if ( re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
+#     re.search(r"iyr:20[1][0-9]|iyr:2020", str) and
+#     re.search(r"eyr:20[2][0-9]|eyr:2030", str) and
+#     re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
+#     re.search(r"hgt:1([5-8][0-9]|9[0-3])cm|hgt:(59|6[0-9]|7[0-6])in", str) and
+#     re.search(r"hcl:#([a-f0-9]{6})", str) and
+#     re.search(r"ecl:(amb|blu|brn|gry|grn|hzl|oth)", str) and
+#     re.search(r"pid:[0-9]{9}", str) 
+#     ):
     
+pocket = set()
+
+dimensions = 3
+
+with open("input-day17.txt") as initf:
+	for y, line in enumerate(initf.readlines()):
+		for x, activity in enumerate(line.strip()):
+			if activity == '#':
+				print(x, " ", y)
+				# Add the right amount of dimensions
+				cube_pos = (x,y) + (0,)*(dimensions-2)
+				pocket.add(cube_pos)
+
+print(pocket)
+print(len(pocket))
