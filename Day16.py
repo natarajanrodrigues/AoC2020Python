@@ -18,13 +18,6 @@ for value in rules.values():
     v = i.split("-")
     for num in range(int(v[0]),int(v[1]) + 1):
       valid_values.add(num)
-
-def is_valid(ticket):
-  for v in ticket.split(","):
-    a_number = int(v)
-    if a_number not in valid_values:
-      return False
-  return True
         
 
 def part_1(): 
@@ -37,19 +30,31 @@ def part_1():
   
   return sum(invalid)
 
+print("Part 1: ", part_1())
 
+
+# Part 2
+
+def is_valid(ticket):
+  for v in ticket.split(","):
+    a_number = int(v)
+    if a_number not in valid_values:
+      return False
+  return True
 
 def part_2(): 
-  invalid = []
-  for line in nearby_tickets:
-    for v in line.split(","):
-      a_number = int(v)
-      if a_number not in valid_values:
-        invalid.append(a_number)
+  valid_tickets = []
+  for ticket in nearby_tickets:
+    if is_valid(ticket):
+      valid_tickets.append(ticket)
   
-  return sum(invalid)
+  valid_tickets.append(your_ticker)
+  
 
 
-print("Part 1: ", part_1())
+  
+
+
+
 # print("Part 2: ", part_2())
 
