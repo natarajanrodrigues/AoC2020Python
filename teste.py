@@ -27,3 +27,14 @@ import re
 a= zip((2,2,2), (-1,0,1) )
 for i,x in a: 
     print(i,x)
+
+import re
+
+# a = re.findall(r"\(+|\|+|\)+| +", "(b ((b 93 | a 14) a | (b 80 | a 40) b) | a (b ((b 102 | 121 88)4 a | 95 b) | a (122 a | 73 b))) (b ((b 93 | a 14) a | (b 80 | a 40) b) | a (b ((b 102 | 121 88)4 a | 95 b) | a (122 a | 73 b))) (a (b (a 13 | b 38) | a (97 a | 128 b)) | b (a (b 102 | 121 88) | b (125 19 | 121 43)))", )
+# print(a)
+rule = "2 33 333"
+i = 33
+print(rule)
+# rule = rule.replace(r"\b" + re.escape(i) + r"\b", 'aa')
+rule = re.sub(r"\b" + str(i) + r"\b", 'aa', rule)
+print(rule)
