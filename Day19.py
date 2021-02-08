@@ -2,7 +2,6 @@ import re
 
 # with open("input-day19-example.txt") as file:
 with open("input-day19.txt") as file:
-# with open("input-day19-part2.txt") as file:
   entries = file.read().split("\n\n")
 
 rule_lines = entries[0].split("\n")
