@@ -1,8 +1,8 @@
 import re
 from itertools import combinations
 
-# with open("input-day20-example.txt") as file:
-with open("input-day20.txt") as file:
+with open("input-day20-example.txt") as file:
+# with open("input-day20.txt") as file:
   entries = file.read().split("\n\n")
 
 tiles = {}
@@ -52,27 +52,27 @@ def match_tiles(tiles_1, tiles_2):
     if tiles_1[0][i] == tiles_2[size-1][i]:
       count += 1
   if count == size:
-    return True
+    return 1
   count = 0
   for i in range(0, size):
     if tiles_1[size-1][i] == tiles_2[0][i]:
       count += 1
   if count == size:
-    return True
+    return 2
   count = 0
   for i in range(0, size):
     if tiles_1[i][size-1] == tiles_2[i][0]:
       count += 1
   if count == size:
-    return True
+    return 3
   count = 0
   for i in range(0, size):
     if tiles_2[i][size-1] == tiles_1[i][0]:
       count += 1
   if count == size:
-    return True
+    return 4
 
-  return False
+  return -1
 
 
 def part_1():
@@ -92,7 +92,7 @@ def part_1():
       if e > 0 and e + 1 % 4 != 1:
         tile_2 = rotate(tile_2)
     
-      if match_tiles(tile_1, tile_2):
+      if match_tiles(tile_1, tile_2) != -1 :
         n1 = neighboors[number_1] if number_1 in neighboors.keys() else set()
         n2 = neighboors[number_2] if number_2 in neighboors.keys() else set()
         # n1.append(number_2)
@@ -115,3 +115,11 @@ def part_1():
   return product
 
 print("Part 1: ", part_1())
+
+def part_2():
+  for x in filter(lambda i: len(i[1]) == 2, neighboors.items()):
+    print(x[0])
+
+  
+
+part_2()
