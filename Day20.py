@@ -1,12 +1,13 @@
 import re
-from itertools import combinations
+import math 
+from itertools import combinations, product
 
 with open("input-day20-example.txt") as file:
 # with open("input-day20.txt") as file:
   entries = file.read().split("\n\n")
 
 tiles = {}
-neighboors = {}
+neighbors = {}
 
 for i in entries:
   name, *content = i.split("\n")
@@ -74,6 +75,17 @@ def match_tiles(tiles_1, tiles_2):
 
   return -1
 
+def print_matrix(matrix, tam):
+  print("\nnumbers matrix")
+  for i in range(0, tam):
+    for j in range(0, tam):
+      if (i,j) in matrix.keys():
+        print(matrix[i,j], end=" ")
+      else:
+        print("    ", end=" ")
+    print()
+  print()
+
 
 def part_1():
   
@@ -93,21 +105,21 @@ def part_1():
         tile_2 = rotate(tile_2)
     
       if match_tiles(tile_1, tile_2) != -1 :
-        n1 = neighboors[number_1] if number_1 in neighboors.keys() else set()
-        n2 = neighboors[number_2] if number_2 in neighboors.keys() else set()
+        n1 = neighbors[number_1] if number_1 in neighbors.keys() else set()
+        n2 = neighbors[number_2] if number_2 in neighbors.keys() else set()
         # n1.append(number_2)
         # n2.append(number_1)
         n1.add(number_2)
         n2.add(number_1)
-        neighboors[number_1] = n1
-        neighboors[number_2] = n2
+        neighbors[number_1] = n1
+        neighbors[number_2] = n2
       
-  print(len(neighboors.keys()))
+  print(len(neighbors.keys()))
   
   product = 1
   p = []
-  for i in neighboors.keys():   
-    if len(neighboors[i]) == 2:
+  for i in neighbors.keys():   
+    if len(neighbors[i]) == 2:
       product *= int(i)
       p.append(int(i))
 
@@ -116,10 +128,52 @@ def part_1():
 
 print("Part 1: ", part_1())
 
+def generate_img(number_matrix):
+  
+
 def part_2():
-  for x in filter(lambda i: len(i[1]) == 2, neighboors.items()):
-    print(x[0])
+
+  tam = int(math.sqrt(len(tiles.keys())))
+  corner_0 = list(filter(lambda x: len(neighbors[x]) == 2, neighbors.keys()))[0]
+
+  number_matrix = {}
+  number_matrix[0,0] = corner_0
+  ns = [ i for i in neighbors[corner_0] ]
+  number_matrix[1,0] = ns[0]
+  number_matrix[0,1] = ns[1]
+
+  while len(number_matrix.keys()) != tam ** 2:  
+    for i in range(0, tam):
+      for j in range(0,tam):
+        if (i,j) not in number_matrix.keys():
+          n = []
+          n.append((i, j - 1))
+          n.append((i, j + 1))
+          n.append((i - 1, j))
+          n.append((i + 1, j))
+          n = list(filter(lambda x: x in number_matrix.keys(), n))
+          inter = neighbors[number_matrix[n[0]]]
+          for x in range(1,len(n)):
+            set2 = neighbors[number_matrix[n[x]]]
+            inter = inter.intersection(set2)
+          res_mapped_keys = set(list(map(lambda k: number_matrix[k], number_matrix.keys())))
+          inter = inter.difference(res_mapped_keys)
+          if len(inter) == 1:
+            number_matrix[i,j] = next(iter(inter))
+
+  print_matrix(number_matrix, tam)
+
+  matrix_image = generate_img(number_matrix)
+
+
+
+
+print("Part 2: ", part_2())
+
 
   
 
-part_2()
+
+
+      
+
