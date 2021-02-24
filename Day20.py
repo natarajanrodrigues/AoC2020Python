@@ -102,32 +102,18 @@ def order_tile(base_tile, unordered_tile):
       return tile_2
   return None
 
-def part_1():
   
-  # for i in combinations(tiles.keys(), 2):
-  #   number_1 = i[0]
-  #   number_2 = i[1]
-  #   tile_1 = tiles[number_1]
-  #   tile_2 = tiles[number_2]
 
-  #   for e in range(0, 15):
-  #     if e > 0 and e + 1 % 5 == 0:
-  #       tile_2 = flip_h(tile_2) 
-  #     if e + 1 == 10:
-  #       tile_2 = flip_v(tile_2)
-  #     if e > 0 and e + 1 % 4 != 1:
-  #       tile_2 = rotate(tile_2)
-    
-  #     if match_tiles(tile_1, tile_2) != -1 :
-  #       n1 = neighbors[number_1] if number_1 in neighbors.keys() else set()
-  #       n2 = neighbors[number_2] if number_2 in neighbors.keys() else set()
-  #       # n1.append(number_2)
-  #       # n2.append(number_1)
-  #       n1.add(number_2)
-  #       n2.add(number_1)
-  #       neighbors[number_1] = n1
-  #       neighbors[number_2] = n2
-  #       break
+def order_tile_to_position(base_tile, unordered_tile, position):
+
+  # tile_1 = base_tile
+  # tile_2 = unordered_tile
+  for e in range(0, 9):
+    unordered_tile = transform_tile(e, unordered_tile)
+    if match_tiles(base_tile, unordered_tile) == position:
+      return unordered_tile
+
+def part_1():
 
   for i in combinations(tiles.keys(), 2):
     number_1 = i[0]
@@ -180,6 +166,98 @@ def generate_img(number_matrix, tam):
       result.append(line)
   return result
 
+def print_content_matrix(tiles, number_matrix, tam):
+  print()
+  print("Printing full matrix")
+
+  for x in range(0,tam):
+    list_line = []
+    for y in range(0, tam):
+      list_line.append((x,y))
+    list_line = list(map(lambda x: number_matrix[x], list_line))
+  
+    for k in range(0,10):
+      line = ''
+      for index in range(0,len(list_line)) :
+        number = list_line[index]
+        t = tiles[number]
+        print(t[k][0:10], end=" ")
+      print()
+    print()
+  
+
+
+# def order_matrix(tiles, number_matrix, tam):
+#   # take 0,0 and 0,1 and put them on right positions
+#   tile_1 = tiles[number_matrix[0,0]]
+#   tile_2 = tiles[number_matrix[0,1]]
+#   tile_3 = tiles[number_matrix[1,0]]
+  
+#   print(number_matrix[0,1])
+#   print(number_matrix[1,0])
+
+#   for e in range(0, 30):
+#     if e > 0 and e + 1 % 5 == 0:
+#       tile_2 = flip_h(tile_2) 
+#     if e + 1 == 10:
+#       tile_2 = flip_v(tile_2)
+#     if e > 0 and e + 1 % 4 != 1:
+#       tile_2 = rotate(tile_2)
+
+#     if e == 15:
+#       tile_1 = tiles[number_matrix[0,0]]
+#       tile_2 = tiles[number_matrix[0,1]]
+  
+#     if e > 14 and e + 1 % 5 == 0:
+#       tile_1 = flip_h(tile_1) 
+#     if e > 14 and e + 1 == 24:
+#       tile_1 = flip_v(tile_1)
+#     if e > 14 and e + 1 % 4 != 1:
+#       tile_1 = rotate(tile_1)
+  
+#     if match_tiles(tile_1, tile_2) == 3 :
+#       # print_single_tile(number_matrix[0,0], tile_1)
+#       # print_single_tile(number_matrix[0, 1], tile_2)
+
+#       tiles[number_matrix[0,0]] = tile_1
+#       tiles[number_matrix[0,1]] = tile_2
+#       break
+
+#   if match_tiles(tile_1, tile_3) == 4:
+#     tile_1 = flip_h(tile_1)
+#     tile_2 = flip_h(tile_2)
+
+
+#   # print_single_tile(number_matrix[0,0], tiles[number_matrix[0,0]])
+#   # print_single_tile(number_matrix[0,1], tiles[number_matrix[0,1]])
+#   for coordenate in (x for x in product(range(0, tam), repeat=2) if x != (0,0)) :
+#     # print(coordenate, coordenate[1])
+#     if coordenate[1] == 0 and coordenate != (0,0):
+#       num_1 = (coordenate[0] - 1, coordenate[1])  
+#     elif coordenate[1] > 0:
+#       num_1 = (coordenate[0], coordenate[1] - 1)
+    
+#     num_2 = coordenate
+#     tile_1 = tiles[number_matrix[num_1]]
+#     # print(coordenate)
+#     tile_2 = order_tile(tile_1, tiles[number_matrix[num_2]]) 
+#     tiles[coordenate] = tile_2
+#     # print_single_tile(number_matrix[0,0], tiles[number_matrix[0,0]])
+#     # print_single_tile(number_matrix[0,1], tiles[number_matrix[0,1]])
+
+
+def transform_tile(k, tile):
+  # if k % 4 == 0:
+  #   return tile
+  if k > 0:
+    tile = rotate(tile)
+  
+  if k == 4:
+    tile = flip_v(tile)
+  
+  return tile
+   
+
 def order_matrix(tiles, number_matrix, tam):
   # take 0,0 and 0,1 and put them on right positions
   tile_1 = tiles[number_matrix[0,0]]
@@ -189,53 +267,82 @@ def order_matrix(tiles, number_matrix, tam):
   print(number_matrix[0,1])
   print(number_matrix[1,0])
 
-  for e in range(0, 30):
-    if e > 0 and e + 1 % 5 == 0:
-      tile_2 = flip_h(tile_2) 
-    if e + 1 == 10:
-      tile_2 = flip_v(tile_2)
-    if e > 0 and e + 1 % 4 != 1:
-      tile_2 = rotate(tile_2)
+  e = 0
+  tile_1 = tiles[number_matrix[0,0]]
+  tile_2 = tiles[number_matrix[0,1]]
 
-    if e == 15:
-      tile_1 = tiles[number_matrix[0,0]]
+  # asdfasfd
+  print_content_matrix(tiles, number_matrix, tam)
+
+  # put 0,0 and 0,1 on position
+  e = 0
+  k = 0
+  while True:  
+    if e == 9:
+      k += 1
+      tile_1 = transform_tile(k, tile_1)
+      e = 0
       tile_2 = tiles[number_matrix[0,1]]
-  
-    if e > 14 and e + 1 % 5 == 0:
-      tile_1 = flip_h(tile_1) 
-    if e > 14 and e + 1 == 24:
-      tile_1 = flip_v(tile_1)
-    if e > 14 and e + 1 % 4 != 1:
-      tile_1 = rotate(tile_1)
-  
-    if match_tiles(tile_1, tile_2) == 3 :
-      # print_single_tile(number_matrix[0,0], tile_1)
-      # print_single_tile(number_matrix[0, 1], tile_2)
-      
-      # if match_tiles(tile_1, tile_3) == 4:
-      #   tile_1 = flip_h(tile_1)
-      #   tile_2 = flip_h(tile_2)
 
+    tile_2 = transform_tile(e, tile_2)
+
+    if match_tiles(tile_1, tile_2) == 3:
       tiles[number_matrix[0,0]] = tile_1
       tiles[number_matrix[0,1]] = tile_2
+      
+      break
+    e += 1
+  
+  # Put 1,0 on position and flip 0,0 and 0,1 if it's necessary
+  
+  # print_content_matrix(tiles, number_matrix, tam)
+
+  tile_3 = tiles[number_matrix[1,0]]
+  while True:  
+    
+    if match_tiles(tile_1, tile_3) == 1:
+      tile_1 = flip_h(tile_1)
+      tile_2 = flip_h(tile_2)
+      tiles[number_matrix[0,0]] = tile_1
+      tiles[number_matrix[0,1]] = tile_2
+      tiles[number_matrix[1,0]] = flip_h(tile_3)
       break
 
-
+    if match_tiles(tile_1, tile_3) == 2:
+      tiles[number_matrix[1,0]] = tile_3
+      break
+    
+    e += 1
+    tile_3 = transform_tile(e, tile_3)
+    
+  print_content_matrix(tiles, number_matrix, tam)
 
   # print_single_tile(number_matrix[0,0], tiles[number_matrix[0,0]])
   # print_single_tile(number_matrix[0,1], tiles[number_matrix[0,1]])
-  for coordenate in (x for x in product(range(0, tam), repeat=2) if x != (0,0)) :
-    # print(coordenate, coordenate[1])
-    if coordenate[1] == 0 and coordenate != (0,0):
-      num_1 = (coordenate[0] - 1, coordenate[1])  
-    elif coordenate[1] > 0:
-      num_1 = (coordenate[0], coordenate[1] - 1)
+  for point in (x for x in product(range(0, tam), repeat=2) if x != (0,0)) :
+    # print(point, point[1])]
+
+    # STUCK HERE    
+    if point[1] == 0 and point != (0,0):
+      num_1 = (point[0] - 1, point[1])  
+    elif point[1] > 0:
+      num_1 = (point[0], point[1] - 1)
     
-    num_2 = coordenate
+    num_2 = point
+    
+    print(num_1)
+    print(point)
+
     tile_1 = tiles[number_matrix[num_1]]
-    # print(coordenate)
-    tile_2 = order_tile(tile_1, tiles[number_matrix[num_2]]) 
-    tiles[coordenate] = tile_2
+    # print(point)
+    if point[1] == 0 and point != (0,0):
+      tile_2 = order_tile_to_position(tile_1, tiles[number_matrix[num_2]], 2) 
+    elif point[1] > 0:
+      tile_2 = order_tile_to_position(tile_1, tiles[number_matrix[num_2]], 3) 
+    tiles[point] = tile_2
+    
+    
+    # print_content_matrix(tiles, number_matrix, tam)
     # print_single_tile(number_matrix[0,0], tiles[number_matrix[0,0]])
     # print_single_tile(number_matrix[0,1], tiles[number_matrix[0,1]])
   
@@ -278,9 +385,12 @@ def part_2():
   print_matrix(number_matrix, tam)
 
   # print_single_tile('2311', tiles['2311'])
+  # print_single_tile('1951', tiles['1951'])
+  # print_single_tile('2729', tiles['2729'])
+  # print_single_tile('2311', tiles['2311'])
+
 
   print("ordering matrix")
-
   new_tiles = order_matrix(tiles,number_matrix, tam)
   
   # print_single_tile('1951', tiles['1951'])
@@ -289,12 +399,45 @@ def part_2():
   
   
 
-  matrix_image = generate_img(number_matrix, tam)
-  print(matrix_image)
+  # matrix_image = generate_img(number_matrix, tam)
+  # print(matrix_image)
+
+  print_content_matrix(tiles, number_matrix, tam)
 
   
 
+  # print("AFFAFAFA")
+  # tile = tiles['1951']
+  # for i in range(0,25):
+  #   print("Transformation", i)
+  #   tile = transform_tile(i, tile)
+  #   print_single_tile('1951', tile)
 
+  # tile_1 = tiles['1951']
+  # tile_2 = tiles['2729']
+
+  # e = 0
+  # k = 0
+
+  # print_single_tile('1951', tile_1)
+
+  # while True:  
+  #   if e == 9:
+  #     k += 1
+  #     tile_1 = transform_tile(k, tile_1)
+  #     e = 0
+  #     tile_2 = tiles['2729']
+
+  #   print_single_tile('2729', tile_2)
+  #   tile_2 = transform_tile(e, tile_2)
+
+  #   if match_tiles(tile_1, tile_2) == 3 :
+  #     print_single_tile('1951', tile_1)
+  #     print_single_tile('2729', tile_2)
+      
+  #     break
+  #   e += 1
+  # print('finish')
 
 
 print("Part 2: ", part_2())
