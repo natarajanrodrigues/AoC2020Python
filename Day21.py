@@ -47,7 +47,10 @@ def part_2(map_items):
           
     if count_found == len(map_items.keys()):
       unique_items_list = []
-      for n in map_items.keys():
+      sorted_ingredients = [k for k in map_items.keys()]
+      sorted_ingredients.sort()
+
+      for n in sorted_ingredients:
         unique_items_list.append(next(iter(map_items[n])))
       # as the unique_items_list is mirroing the keys on map_items, the unique_item_list is ordered by the key/ingredient - that way the problem wants to be
       return ','.join([i for i in unique_items_list])
