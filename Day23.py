@@ -89,8 +89,6 @@ class LinkedList:
       return values[crab_cursor_index - 1]
     else:
       return values[len(values) - 1]
-    
-
   
   def move(self, num_move):
     print("\n-- move {0}--".format(num_move))
@@ -110,6 +108,44 @@ class LinkedList:
     print("pick up: ", ' '.join([str(e) for e in pick_up]))
     destination = self.destination(pick_up)
     print("destination: ", destination)
+
+    # making the moves:
+    number_after = destination
+    for i in range(0,3):
+      self.add_after(number_after, pick_up[i])
+      number_after = pick_up[i]
+    self.crab_cursor = self.crab_cursor.next
+
+  
+  def destination2(self, pick_up):
+    values = []
+    cursor = self.head
+    values.append(cursor.value)
+    while cursor.next is not self.head:
+      cursor = cursor.next
+      values.append(cursor.value)
+    values.sort()
+    
+    crab_cursor_index = values.index(self.crab_cursor.value)
+    if crab_cursor_index  > 0:
+      return values[crab_cursor_index - 1]
+    else:
+      return values[len(values) - 1]
+
+
+  def move2(self, num_move):
+    
+    pick_up = []
+    pick_cursor = self.crab_cursor
+    
+    for i in range(0,3):
+      pick_up.append(pick_cursor.next.value)
+      pick_cursor = pick_cursor.next
+
+    for i in range(0,3):
+      self.remove(pick_up[i])
+    
+    destination = self.destination2(pick_up)
 
     # making the moves:
     number_after = destination
@@ -155,10 +191,21 @@ class LinkedList:
 
     print(res)
     return ''.join([str(e) for e in res])
+
+  play_2(self, n_moves):
+
     
 
     
 def part_1(input):
+  linked_list = LinkedList()
+  linked_list.add_str_array(input)
+
+  linked_list.play(100)
+
+  return linked_list.labels_after_1()
+
+def part_2(input):
   linked_list = LinkedList()
   linked_list.add_str_array(input)
 
