@@ -13,10 +13,8 @@ directions_map = {
   "ne": (1, 1)
 }
 
-adjacents_neighbors = [(4, 0), (3, -1), (3, 1), (5, -1), (-3, -3), (5, 1), (-3, 3), (0, 2), 
-(1, -3), (2, 2), (1, 3), (-4, -2), (-1, -1), (-2, -2), (-1, 1), (3, -3), (4, 2), (3, 3), (-6, 0), 
-(0, -2), (2, -2), (-4, 0), (-1, -3), (-2, 0), (-1, 3), (4, -2), (-5, -1), (-5, 1), (-3, -1), (-3, 1), (1, 1), (2, 0), (1, -1), (-4, 2), (6, 0), (-2, 2) ]
 
+adjacents_neighbors = [(4, 0), (3, -1), (3, 1), (0, 2), (2, 2), (-1, -1), (-2, -2), (-1, 1), (0, -2), (2, -2), (-4, 0), (-2, 0), (-3, -1), (-3, 1), (1, 1), (2, 0), (1, -1), (-2, 2)]
 
 # def move(point, moves):
 #   for m in moves:
@@ -62,24 +60,6 @@ def part_1(entries):
   return len(tiles)
 
 
-  # min_x = sys.maxsize
-  # max_x = -sys.maxsize
-  # min_y = sys.maxsize
-  # max_y = -sys.maxsize
-  # for i in array_tiles:
-  #   if i[0] < min_x:
-  #     min_x = i[0]
-  #   if i[0] > max_x:
-  #     max_x = i[0]
-  #   if i[1] < min_y:
-  #     min_y = i[1]
-  #   if i[1] > max_y:
-  #     max_y = i[1]
-  # print("min x", min_x)
-  # print("max x", max_x)
-  # print("min y", min_y)
-  # print("max y", max_y)
-
 def neighbors(coord_tile):
   neighbors = []
   for p in directions_map.values():
@@ -103,6 +83,8 @@ def get_adj_black_tiles(array_tiles, coord_tile):
 def art_exhibit(array_tiles, num_days):
   
   for i in range(num_days):
+    # print(i + 1, len(array_tiles), end="\r")
+    
     # processing black tiles to white
     to_white = []
     for black_tile in array_tiles:
@@ -113,10 +95,11 @@ def art_exhibit(array_tiles, num_days):
     # processing white tiles to black
     to_black = []
     all_neighbors = set()
+    array_tiles_set = set(array_tiles)
     for point in array_tiles:
       far_neighbors_point = far_neighbors(point)
       for p in far_neighbors_point:
-        if p not in all_neighbors and p not in array_tiles: 
+        if p not in all_neighbors and p not in array_tiles_set: 
           num_adj_black_tiles = get_adj_black_tiles(array_tiles, p)
           if num_adj_black_tiles == 2:
             to_black.append(p)
@@ -140,16 +123,18 @@ def art_exhibit(array_tiles, num_days):
 def part_2(entries):
   tiles = populate_tiles(entries)
   
-  return len(art_exhibit(tiles, 30))
+  return len(art_exhibit(tiles, 100))
   
 
 
 if __name__ == "__main__":
   
-  with open("input-day24-example.txt") as file:
-  # with open("input-day24.txt") as file:
+  # with open("input-day24-example.txt") as file:
+  with open("input-day24.txt") as file:
     entries = [line[:-1] for line in file.readlines()]
 
   
   print("Part 1:", part_1(copy.deepcopy(entries)))
   print("Part 2:", part_2(copy.deepcopy(entries)))
+
+  
